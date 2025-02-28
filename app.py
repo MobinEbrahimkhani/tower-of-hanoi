@@ -114,6 +114,14 @@ class TowerOfHanoi:
 						x + width/2, y,
 						fill=self.colors[disk_size-1]
 					)
+     
+					# Add text label showing disk size
+					self.canvas.create_text(
+						x, y - height/2,
+						text=str(disk_size),
+						fill="black",
+						font=("Arial", 10, "bold")
+					)
 
 	def move_disk(self):  
 		if len(self.poles[self.selected_pole_2]) == 0:
@@ -129,7 +137,7 @@ class TowerOfHanoi:
 		else:
 			self.show_message("Invalid move")
 		
-		# Update the graphical representation
+		# Update the graphical
 		self.draw_game()
 
 	def check_win(self):
