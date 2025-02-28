@@ -49,8 +49,8 @@ class TowerOfHanoi:
 		entry = tk.Entry(self.window, font=("Arial", 50))
 		entry.pack(pady=20)
 		
-		submit_pole_1_button = tk.Button(self.window, text="Submit your original pole", command=submit_pole_1)
-		submit_pole_2_button = tk.Button(self.window, text="Submit your destination pole", command=submit_pole_2)
+		submit_pole_1_button = tk.Button(self.window, text="Submit as original pole", command=submit_pole_1)
+		submit_pole_2_button = tk.Button(self.window, text="Submit as destination pole", command=submit_pole_2)
 		
 		submit_pole_2_button.pack(pady=10)
 		submit_pole_1_button.pack(pady=10)
