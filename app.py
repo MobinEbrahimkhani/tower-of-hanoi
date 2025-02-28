@@ -3,6 +3,7 @@ import tkinter.messagebox as messagebox
 
 class TowerOfHanoi:
 	def __init__(self):
+		self.count = 0
 		self.poles = {"1": [], "2": [], "3": []}
 		self.num_disks = 5
 		self.initialize_game()
@@ -88,6 +89,14 @@ class TowerOfHanoi:
 		if self.canvas:
 			# Clear canvas
 			self.canvas.delete("all")
+   
+			# Draw the count of the moves
+			self.canvas.create_text(
+				400, 50,
+				text=f"Moves: {self.count}",
+				fill="black",
+				font=("Arial", 20, "bold")
+			)
 			
 			# Draw the base
 			self.canvas.create_rectangle(100, 350, 700, 380, fill="brown")
@@ -127,11 +136,13 @@ class TowerOfHanoi:
 		if len(self.poles[self.selected_pole_2]) == 0:
 			self.poles[self.selected_pole_2].append(self.poles[self.selected_pole_1].pop())
 			self.show_message(f"Moved disk from pole {self.selected_pole_1} to pole {self.selected_pole_2}")
+			self.count += 1
 			if self.check_win():
 				return
 		elif self.poles[self.selected_pole_1][-1] < self.poles[self.selected_pole_2][-1]:
 			self.poles[self.selected_pole_2].append(self.poles[self.selected_pole_1].pop())
 			self.show_message(f"Moved disk from pole {self.selected_pole_1} to pole {self.selected_pole_2}")
+			self.count += 1
 			if self.check_win():
 				return
 		else:
@@ -141,7 +152,7 @@ class TowerOfHanoi:
 		self.draw_game()
 
 	def check_win(self):
-		if len(self.poles["3"]) == self.num_disks and self.poles["3"] == list(range(self.num_disks, 0, -1)):
+		if self.poles["3"] == list(range(self.num_disks, 0, -1)):
 			self.show_message("You won!")
 			messagebox.showinfo("Congratulations", "You won the game!")
 			return True
