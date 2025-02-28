@@ -1,11 +1,18 @@
+from tkinter import *
 class TowerOfHanoi:
 	def __init__(self):
 		self.poles = {"1": [], "2": [], "3": []}
 		self.disks = []
 		self.num_disks = len(self.poles) * 2 - 1
 		self.initialize_game()
-		self.get_pole_input()
+		self.GUI()
+		# self.get_pole_input()
 		
+	def GUI(self):
+		window = Tk()
+		window.geometry("1080x780")
+		window.mainloop()
+	
 	def initialize_game(self):
 		# Initializing disks
 		for i in range(self.num_disks):
