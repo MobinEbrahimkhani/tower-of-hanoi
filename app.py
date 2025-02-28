@@ -7,14 +7,21 @@ class TowerOfHanoi:
 		self.num_disks = len(self.poles) * 2 - 1
 		self.initialize_game()
 		self.GUI()
-		self.selected_pole_1 = 0
-		self.selected_pole_2 = 0
-		# self.get_pole_input()
+		self.selected_pole_1 = ""
+		self.selected_pole_2 = ""
 		
 	def GUI(self):
-		def submit():
+		def submit_pole_1():
 			self.selected_pole_1 = entry.get()
-			print(self.selected_pole_1)
+			if self.selected_pole_1 not in self.poles.keys():
+				print("Invalid pole number")
+		
+		def submit_pole_2():
+			self.selected_pole_2 = entry.get()
+			if self.selected_pole_2 not in self.poles.keys():
+				print("Invalid pole number")
+			self.move_disk()
+   
 		
 		window = Tk()
 		window.geometry("1080x780")
@@ -23,8 +30,11 @@ class TowerOfHanoi:
 		entry = Entry(window,font=("Arial",50))
 		entry.pack()
 		
-		submit_button = Button(window,text="Submit your picked pole",command=submit)
-		submit_button.pack()
+		submit_pole_1_button = Button(window,text="Submit your original pole",command=submit_pole_1)
+		submit_pole_2_button = Button(window,text="Submit your destination pole",command=submit_pole_2)
+		
+		submit_pole_2_button.pack()
+		submit_pole_1_button.pack()
 		window.mainloop()
 
 	
@@ -40,25 +50,18 @@ class TowerOfHanoi:
 		# Default is that all the disks are on pole 1 
 		# And the destination pole is pole 3
 		# The first value(0) of a disk is the highest disk on the pole 	
-  
-	def get_pole_input(self):
-		selected_pole_1 = input("Enter the pole you want to pick a disk from: ")
-		selected_pole_2 = input("Enter the pole you want to put the disk on: ")
-		if selected_pole_1 not in self.poles.keys() or selected_pole_2 not in self.poles.keys():
-			print("Invalid pole number")
-   
-		self.move_disk(selected_pole_1, selected_pole_2)
 
-	def move_disk(self, selected_pole_1, selected_pole_2):
+
+	def move_disk(self):
 		# Check if the move is valid
-		if len(self.poles[selected_pole_1]) == 0:
+		if len(self.poles[self.selected_pole_1]) == 0:
 			print("There is no disk on the selected pole")
 			return
  
-		if len(self.poles[selected_pole_2]) == 0:
-			self.poles[selected_pole_2].append(self.poles[selected_pole_1].pop())
+		if len(self.poles[self.selected_pole_2]) == 0:
+			self.poles[self.elected_pole_2].append(self.poles[self.selected_pole_1].pop())
 			return
  
 # Create an instance of the game in Python
 game = TowerOfHanoi()
-print(game.selected_pole_1)
+print(game.poles)
