@@ -14,7 +14,7 @@ class TowerOfHanoi:
 		
 		# Putting the disks on pole number 1
 		self.poles["1"] = self.disks
-  	# Disks are numbered from 1 - n(disks) from small to big
+  		# Disks are numbered from 1 - n(disks) from small to big
 		# Default is that all the disks are on pole 1 
 		# And the destination pole is pole 3
 		# The first value(0) of a disk is the highest disk on the pole 
