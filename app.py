@@ -6,14 +6,24 @@ class TowerOfHanoi:
 		self.num_disks = len(self.poles) * 2 - 1
 		self.initialize_game()
 		self.GUI()
+		self.selected_pole_1 = 0
+		self.selected_pole_2 = 0
 		# self.get_pole_input()
 		
 	def GUI(self):
+		def submit():
+			self.selected_pole_1 = entry.get()
+			print(self.selected_pole_1)
+		
 		window = Tk()
 		window.geometry("1080x780")
 		window.title("Tower of Hanoi")
-		entry = Entry(window)
+		
+		entry = Entry(window,font=("Arial",50))
 		entry.pack()
+		
+		submit_button = Button(window,text="Submit your picked pole",command=submit)
+		submit_button.pack()
 		window.mainloop()
 
 	
@@ -38,3 +48,4 @@ class TowerOfHanoi:
 
 # Create an instance of the game in Python
 game = TowerOfHanoi()
+print(game.selected_pole_1)
