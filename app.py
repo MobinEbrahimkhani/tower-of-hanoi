@@ -12,7 +12,11 @@ class TowerOfHanoi:
 	def GUI(self):
 		window = Tk()
 		window.geometry("1080x780")
+		window.title("Tower of Hanoi")
+		entry = Entry(window)
+		entry.pack()
 		window.mainloop()
+
 	
 	def initialize_game(self):
 		# Initializing disks
