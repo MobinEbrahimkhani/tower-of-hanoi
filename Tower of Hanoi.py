@@ -1,18 +1,17 @@
 import tkinter as tk
 import tkinter.messagebox as messagebox
-
 class TowerOfHanoi:
 	def __init__(self):
 		self.count = 0
 		self.poles = {"1": [], "2": [], "3": []}
-		self.num_disks = 5
+		self.num_disks = 7
 		self.initialize_game()
 		self.window = None
 		self.status_label = None
 		self.selected_pole_1 = ""
 		self.selected_pole_2 = ""
 		self.canvas = None
-		self.colors = ["red", "orange", "yellow", "green", "blue"]  # Colors for disks
+		self.colors = ["purple","blue","cyan","green","yellow","orange","red"]  # Colors for disks
 		self.GUI()
 		
 	def initialize_game(self):
@@ -112,7 +111,7 @@ class TowerOfHanoi:
 				y_base = 350  # Base y-position
 				
 				for i, disk_size in enumerate(self.poles[pole_num]):
-					# Calculate disk dimensions
+					# Calculate disk dimentions
 					width = 25 + disk_size * 15
 					height = 20
 					y = y_base - (i + 1) * height
