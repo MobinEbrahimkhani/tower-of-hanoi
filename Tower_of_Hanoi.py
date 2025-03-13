@@ -17,14 +17,8 @@ class TowerOfHanoi:
 		self.colors = ["purple","blue","cyan","green","yellow","orange","red"]  # Colors for disks
 		self.getting_num_of_disks_GUI()
 
-	# auto solve function
-	def auto_solve():
-		solving
-
-	
 	def initialize_game(self):
 		# Initializing disks
-		print("asdfghjm,")
 		for i in range(self.num_disks, 0, -1):
 			self.poles["1"].append(i)
 	
@@ -74,6 +68,14 @@ class TowerOfHanoi:
 				entry.delete(0, tk.END)
 				self.move_disk()
 
+		# auto solve button function
+		def auto_solve(self):
+			result = solving(self.num_disks)
+			for item in result:
+				self.selected_pole_1 = item[0]
+				self.selected_pole_2 = item[1]
+				sleep(0.5)
+
 		self.window = tk.Tk()
 		self.window.geometry("1280x1024")
 		self.window.title("Tower of Hanoi")
@@ -85,11 +87,13 @@ class TowerOfHanoi:
 		entry = tk.Entry(self.window, font=("Arial", 50))
 		entry.pack(pady=20)
 		
-		submit_pole_1_button = tk.Button(self.window, text="Submit as original pole", command=submit_pole_1)
+		submit_pole_1_button = tk.Button(self.window, text="Submit as origin pole", command=submit_pole_1)
 		submit_pole_2_button = tk.Button(self.window, text="Submit as destination pole", command=submit_pole_2)
-		
+		auto_solve_button = tk.Button(self.window, text="Auto Solve", command=auto_solve)
+
 		submit_pole_2_button.pack(pady=10)
 		submit_pole_1_button.pack(pady=10)
+		auto_solve_button.pack(pady=10)
 		
 		# Add a status label to display messages
 		self.status_label = tk.Label(self.window, text="Game status will appear here", font=("Arial", 14))
