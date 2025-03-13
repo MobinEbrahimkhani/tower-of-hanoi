@@ -36,7 +36,7 @@ def main(n):
 
         disk = stacks[from_peg].pop()
         stacks[to_peg].append(disk)
-        result.append(f"disk{disk} from {from_peg} to {to_peg}")
+        result.append(f"from {from_peg} to {to_peg}")
     return result
     
 print(main(4))
