@@ -1,4 +1,4 @@
-def main(n):
+def solving(n):
     source, auxiliary, target = '1', '2', '3'
     result = []
 

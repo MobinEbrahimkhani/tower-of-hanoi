@@ -1,5 +1,6 @@
 import tkinter as tk
 import tkinter.messagebox as messagebox
+
 class TowerOfHanoi:
 	def __init__(self):
 		self.count = 0
