@@ -37,11 +37,6 @@ def solving(n):
         disk = stacks[from_peg].pop()
         stacks[to_peg].append(disk)
         result.append([from_peg,to_peg])
-        # result.update({from_peg:to_peg})
     return result
-
-print(solving(3))
-print(len(solving(3)))
-
 
 

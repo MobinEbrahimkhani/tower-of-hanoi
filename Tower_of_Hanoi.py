@@ -69,12 +69,17 @@ class TowerOfHanoi:
 				self.move_disk()
 
 		# auto solve button function
-		def auto_solve(self):
+		def auto_solve():
 			result = solving(self.num_disks)
-			for item in result:
-				self.selected_pole_1 = item[0]
-				self.selected_pole_2 = item[1]
-				sleep(0.5)
+			
+			def perform_move(index):
+				if index < len(result):
+					self.selected_pole_1 = result[index][0]
+					self.selected_pole_2 = result[index][1]
+					self.move_disk()
+					self.window.after(500, perform_move, index + 1)
+			
+			perform_move(0)  # Start the first move
 
 		self.window = tk.Tk()
 		self.window.geometry("1280x1024")
@@ -187,14 +192,14 @@ class TowerOfHanoi:
 		else:
 			self.show_message("Invalid move")
 		
-		# Update the graphical
+		# Update the graphic
 		self.draw_game()
 
 	def check_win(self):
 		if self.poles["3"] == list(range(self.num_disks, 0, -1)):
-			self.show_message("You won!")
-			messagebox.showinfo("Congratulations", "You won the game!")
-			self.window.destroy()
+			self.show_message("Game won!")
+			messagebox.showinfo("Congratulations", "Game won!")
+			self.window.after(1000,self.window.destroy())
 			return True
 		else:
 			return False
