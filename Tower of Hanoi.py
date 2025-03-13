@@ -4,7 +4,7 @@ class TowerOfHanoi:
 	def __init__(self):
 		self.count = 0
 		self.poles = {"1": [], "2": [], "3": []}
-		self.num_disks = 7
+		self.num_disks = 1
 		self.initialize_game()
 		self.window = None
 		self.status_label = None
@@ -154,6 +154,7 @@ class TowerOfHanoi:
 		if self.poles["3"] == list(range(self.num_disks, 0, -1)):
 			self.show_message("You won!")
 			messagebox.showinfo("Congratulations", "You won the game!")
+			# self.window.quit()
 			return True
 		else:
 			return False
