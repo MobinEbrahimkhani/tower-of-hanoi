@@ -38,7 +38,6 @@ def main(n):
         stacks[to_peg].append(disk)
         result.append(f"from {from_peg} to {to_peg}")
     return result
-    
-print(main(4))
+
 
 
