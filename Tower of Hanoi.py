@@ -4,21 +4,49 @@ class TowerOfHanoi:
 	def __init__(self):
 		self.count = 0
 		self.poles = {"1": [], "2": [], "3": []}
-		self.num_disks = 1
-		self.initialize_game()
+		self.num_disks = 4
 		self.window = None
+		self.get_disk_nums_window = None
 		self.status_label = None
 		self.selected_pole_1 = ""
 		self.selected_pole_2 = ""
 		self.canvas = None
 		self.colors = ["purple","blue","cyan","green","yellow","orange","red"]  # Colors for disks
-		self.GUI()
-		
+		self.getting_num_of_disks_GUI()
+
 	def initialize_game(self):
 		# Initializing disks
+		print("asdfghjm,")
 		for i in range(self.num_disks, 0, -1):
 			self.poles["1"].append(i)
 	
+
+	# getting the number of disks that are going to be in the game
+	def getting_num_of_disks_GUI(self):
+		self.get_disk_nums_window = tk.Tk()
+		first_entry = tk.Entry(self.get_disk_nums_window, font=("Arial", 50))
+		first_entry.pack(pady=20)
+		self.get_disk_nums_window.title("Enter the number of disks to be in the game")
+		def submit_num_of_disks():
+			try:
+				self.num_disks = int(first_entry.get())
+				if self.num_disks in range(1,8):
+					self.get_disk_nums_window.destroy()
+					self.initialize_game()
+					self.GUI()
+				else:
+					self.get_disk_nums_window.destroy()
+					self.getting_num_of_disks_GUI()
+			except:
+					self.get_disk_nums_window.destroy()
+					self.getting_num_of_disks_GUI()
+
+		submit_num_of_disks_button = tk.Button(self.get_disk_nums_window,text="Submit the number of disks",command=submit_num_of_disks)
+		submit_num_of_disks_button.pack(pady=10)
+		
+		self.get_disk_nums_window.mainloop()
+			
+
 	def GUI(self):
 		def submit_pole_1():
 			self.selected_pole_1 = entry.get()
@@ -154,7 +182,7 @@ class TowerOfHanoi:
 		if self.poles["3"] == list(range(self.num_disks, 0, -1)):
 			self.show_message("You won!")
 			messagebox.showinfo("Congratulations", "You won the game!")
-			# self.window.quit()
+			self.window.destroy()
 			return True
 		else:
 			return False
