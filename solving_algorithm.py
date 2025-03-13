@@ -1,42 +1,43 @@
-def solving(n):
-    source, auxiliary, target = '1', '2', '3'
+def solving(num_of_disks):
+    pole_1, pole_2, pole_3 = '1', '2', '3'
     result = []
 
-    if n % 2 == 0:
-        auxiliary, target = target, auxiliary
+    if num_of_disks % 2 == 0:
+        pole_2, pole_3 = pole_3, pole_2
 
 
-    total_moves = (2 ** n) - 1
-    stacks = { '1': list(range(n, 0, -1)), '2': [], '3': [] }
+    total_moves = (2 ** num_of_disks) - 1
+    poles = { '1': list(range(num_of_disks, 0, -1)), '2': [], '3': [] }
 
 
     for move in range(1, total_moves + 1):
         if move % 3 == 1:
-            if stacks[source] and (not stacks[target] or stacks[source][-1] < stacks[target][-1]):
-                from_peg = source
-                to_peg = target
+            if poles[pole_1] and (not poles[pole_3] or poles[pole_1][-1] < poles[pole_3][-1]):
+                origin_pole = pole_1
+                destination_pole = pole_3
             else:
-                from_peg = target
-                to_peg = source
+                origin_pole = pole_3
+                destination_pole = pole_1
         elif move % 3 == 2:
-            if stacks[source] and (not stacks[auxiliary] or stacks[source][-1] < stacks[auxiliary][-1]):
-                from_peg = source
-                to_peg = auxiliary
+            if poles[pole_1] and (not poles[pole_2] or poles[pole_1][-1] < poles[pole_2][-1]):
+                origin_pole = pole_1
+                destination_pole = pole_2
             else:
-                from_peg = auxiliary
-                to_peg = source
+                origin_pole = pole_2
+                destination_pole = pole_1
         else:
-            if stacks[auxiliary] and (not stacks[target] or stacks[auxiliary][-1] < stacks[target][-1]):
-                from_peg = auxiliary
-                to_peg = target
+            if poles[pole_2] and (not poles[pole_3] or poles[pole_2][-1] < poles[pole_3][-1]):
+                origin_pole = pole_2
+                destination_pole = pole_3
             else:
-                from_peg = target
-                to_peg = auxiliary
+                origin_pole = pole_3
+                destination_pole = pole_2
 
 
-        disk = stacks[from_peg].pop()
-        stacks[to_peg].append(disk)
-        result.append([from_peg,to_peg])
+        disk = poles[origin_pole].pop()
+        poles[destination_pole].append(disk)
+        result.append([origin_pole,destination_pole])
+    
     return result
 
 
