@@ -1,6 +1,6 @@
 def solving(n):
     source, auxiliary, target = '1', '2', '3'
-    result = []
+    result = {}
 
     if n % 2 == 0:
         auxiliary, target = target, auxiliary
@@ -36,8 +36,9 @@ def solving(n):
 
         disk = stacks[from_peg].pop()
         stacks[to_peg].append(disk)
-        result.append(f"from {from_peg} to {to_peg}")
+        result.update({from_peg:to_peg})
     return result
+print(solving(1))
 
 
 

@@ -1,5 +1,7 @@
 import tkinter as tk
 import tkinter.messagebox as messagebox
+from solving_algorithm import solving
+from time import sleep
 
 class TowerOfHanoi:
 	def __init__(self):
@@ -15,6 +17,11 @@ class TowerOfHanoi:
 		self.colors = ["purple","blue","cyan","green","yellow","orange","red"]  # Colors for disks
 		self.getting_num_of_disks_GUI()
 
+	# auto solve function
+	def auto_solve():
+		solving
+
+	
 	def initialize_game(self):
 		# Initializing disks
 		print("asdfghjm,")
