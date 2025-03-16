@@ -13,6 +13,7 @@ class TowerOfHanoi:
 		self.status_label = None
 		self.selected_pole_1 = ""
 		self.selected_pole_2 = ""
+		self.animation_speed = 1500
 		self.canvas = None
 		self.colors = ["purple","blue","cyan","green","yellow","orange","red"]  # Colors for disks
 		self.getting_num_of_disks_GUI()
@@ -77,7 +78,8 @@ class TowerOfHanoi:
 					self.selected_pole_1 = result[index][0]
 					self.selected_pole_2 = result[index][1]
 					self.move_disk()
-					self.window.after(500, perform_move, index + 1)
+					self.window.after(self.animation_speed, perform_move, index + 1)
+					self.animation_speed = slider.get() * 100
 			
 			perform_move(0)  # Start the first move
 
@@ -95,11 +97,18 @@ class TowerOfHanoi:
 		submit_pole_1_button = tk.Button(self.window, text="Submit as origin pole", command=submit_pole_1)
 		submit_pole_2_button = tk.Button(self.window, text="Submit as destination pole", command=submit_pole_2)
 		auto_solve_button = tk.Button(self.window, text="Auto Solve", command=auto_solve)
+		slider = tk.Scale(self.window, from_=1, to=20, orient="horizontal")
+		slider_msg = tk.Message(self.window, text="Speed of the animation:", width=300)
+		
 
+	
 		submit_pole_2_button.pack(pady=10)
 		submit_pole_1_button.pack(pady=10)
 		auto_solve_button.pack(pady=10)
-		
+
+		slider_msg.pack()
+		slider.pack()
+
 		# Add a status label to display messages
 		self.status_label = tk.Label(self.window, text="Game status will appear here", font=("Arial", 14))
 		self.status_label.pack(pady=10)
