@@ -1,21 +1,21 @@
 import tkinter as tk
 import tkinter.messagebox as messagebox
 from solving_algorithm import solving
-from time import sleep
 
 class TowerOfHanoi:
 	def __init__(self):
-		self.count = 0
-		self.poles = {"1": [], "2": [], "3": []}
-		self.num_disks = 4
-		self.window = None
-		self.get_disk_nums_window = None
-		self.status_label = None
-		self.selected_pole_1 = ""
-		self.selected_pole_2 = ""
-		self.animation_speed = 1500
-		self.canvas = None
-		self.colors = ["purple","blue","cyan","green","yellow","orange","red"]  # Colors for disks
+		self.count = 0	# moves count
+		self.poles = {"1": [], "2": [], "3": []}	# stores poles and the disks on them
+		self.num_disks = 4	# the number of disks that are going to be in the game
+		self.get_disk_nums_window = None	# the first window that pops up and gets the number of disk from the user
+		self.window = None	# the main window that everything is on it
+		self.canvas = None	# the canvas that the game is shown on
+		self.status_label = None	# shows the events of the game on the main window under the speed slider
+		self.selected_pole_1 = ""	# the pole that we are going to take a disk from
+		self.selected_pole_2 = ""	# the pole that we are going to put the taken disk on
+		self.mouse_click_count = 0	# mouse click count to choose if it is the origin or destination pole that is being selected
+		self.animation_speed = 1500	# speed of the animation
+		self.colors = ["purple","blue","cyan","green","yellow","orange","red"]	# colors for disks
 		self.getting_num_of_disks_GUI()
 
 	def initialize_game(self):
@@ -24,7 +24,7 @@ class TowerOfHanoi:
 			self.poles["1"].append(i)
 	
 
-	# getting the number of disks that are going to be in the game
+	# getting the number of disks that are going to be in the game from the user
 	def getting_num_of_disks_GUI(self):
 		self.get_disk_nums_window = tk.Tk()
 		first_entry = tk.Entry(self.get_disk_nums_window, font=("Arial", 50))
@@ -51,24 +51,7 @@ class TowerOfHanoi:
 			
 
 	def GUI(self):
-		def submit_pole_1():
-			self.selected_pole_1 = entry.get()
-			if self.selected_pole_1 not in self.poles.keys():
-				self.show_message("Invalid pole number")
-			elif len(self.poles[self.selected_pole_1]) == 0:
-				self.show_message("No disk on the selected pole")
-			else:
-				self.show_message(f"Selected pole {self.selected_pole_1}")
-				entry.delete(0, tk.END)
 		
-		def submit_pole_2():
-			self.selected_pole_2 = entry.get()
-			if self.selected_pole_2 not in self.poles.keys():
-				self.show_message("Invalid pole number")
-			else:
-				entry.delete(0, tk.END)
-				self.move_disk()
-
 		# auto solve button function
 		def auto_solve():
 			result = solving(self.num_disks)
@@ -90,22 +73,80 @@ class TowerOfHanoi:
 		# Create canvas for graphical representation
 		self.canvas = tk.Canvas(self.window, width=800, height=400, bg="white")
 		self.canvas.pack(pady=20)
-		
-		entry = tk.Entry(self.window, font=("Arial", 50))
-		entry.pack(pady=20)
-		
-		submit_pole_1_button = tk.Button(self.window, text="Submit as origin pole", command=submit_pole_1)
-		submit_pole_2_button = tk.Button(self.window, text="Submit as destination pole", command=submit_pole_2)
+
 		auto_solve_button = tk.Button(self.window, text="Auto Solve", command=auto_solve)
 		slider = tk.Scale(self.window, from_=1, to=20, orient="horizontal")
 		slider_msg = tk.Message(self.window, text="Speed of the animation:", width=300)
+		# mouse click function
+		def mouse_click(event):
+			# cheking if the click is on the canvas
+			if 140 <= event.y <= 400 and 130 <= event.x <= 670:
+				self.mouse_click_count += 1
+				if self.mouse_click_count % 2 != 0:
+					# selecting pole_1 as the origin pole
+					if 130 <= event.x <= 270:
+						print("pole_1 selected as selected_pole_1",event.x)
+						self.selected_pole_1 = "1"
+						if self.selected_pole_1 not in self.poles.keys():
+							self.show_message("Invalid pole number")
+						elif len(self.poles[self.selected_pole_1]) == 0:
+							self.show_message("No disk on the selected pole")
+						else:
+							self.show_message(f"Selected pole {self.selected_pole_1}")
+
+					# selecting pole_2 as the origin pole		
+					elif 330 <= event.x <= 470:
+						print("pole_2 selected as selected_pole_1",event.x)
+						self.selected_pole_1 = "2"
+						if self.selected_pole_1 not in self.poles.keys():
+							self.show_message("Invalid pole number")
+						elif len(self.poles[self.selected_pole_1]) == 0:
+							self.show_message("No disk on the selected pole")
+						else:
+							self.show_message(f"Selected pole {self.selected_pole_1}")
+
+					# selecting pole_3 ans the origin pole
+					elif 530 <= event.x <= 670:
+						print("pole_3 selected as selected_pole_1",event.x)
+						self.selected_pole_1 = "3"
+						if self.selected_pole_1 not in self.poles.keys():
+							self.show_message("Invalid pole number")
+						elif len(self.poles[self.selected_pole_1]) == 0:
+							self.show_message("No disk on the selected pole")
+						else:
+							self.show_message(f"Selected pole {self.selected_pole_1}")
+#-----------------------------------------------------------------------------------------------------------------------------------------
+				else: 
+					# selecting pole_1 as destination pole
+					if 130 <= event.x <= 270:
+						self.selected_pole_2 = "1"
+						if self.selected_pole_2 not in self.poles.keys():
+							self.show_message("Invalid pole number")
+						else:
+							self.move_disk()
+					
+					# selecting pole_2 as destionation pole
+					elif 330 <= event.x <= 470:
+						self.selected_pole_2 = "2"
+						if self.selected_pole_2 not in self.poles.keys():
+							self.show_message("Invalid pole number")
+						else:
+							self.move_disk()
+					
+					#selecting pole_3 as destionation pole
+					elif 530 <= event.x <= 670:
+						self.selected_pole_2 = "3"
+						if self.selected_pole_2 not in self.poles.keys():
+							self.show_message("Invalid pole number")
+						else:
+							self.move_disk()
+
+			
 		
-
-	
-		submit_pole_2_button.pack(pady=10)
-		submit_pole_1_button.pack(pady=10)
+		# binding the mouse click event to the window
+		self.window.bind("<Button-1>",mouse_click)
+		
 		auto_solve_button.pack(pady=10)
-
 		slider_msg.pack()
 		slider.pack()
 
