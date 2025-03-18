@@ -88,7 +88,6 @@ class TowerOfHanoi:
 				if self.mouse_click_count % 2 != 0:
 					# selecting pole_1 as the origin pole
 					if 130 <= event.x <= 270:
-						print("pole_1 selected as selected_pole_1",event.x)
 						self.selected_pole_1 = "1"
 						if self.selected_pole_1 not in self.poles.keys():
 							self.show_message("Invalid pole number")
@@ -99,7 +98,6 @@ class TowerOfHanoi:
 
 					# selecting pole_2 as the origin pole		
 					elif 330 <= event.x <= 470:
-						print("pole_2 selected as selected_pole_1",event.x)
 						self.selected_pole_1 = "2"
 						if self.selected_pole_1 not in self.poles.keys():
 							self.show_message("Invalid pole number")
@@ -110,7 +108,6 @@ class TowerOfHanoi:
 
 					# selecting pole_3 ans the origin pole
 					elif 530 <= event.x <= 670:
-						print("pole_3 selected as selected_pole_1",event.x)
 						self.selected_pole_1 = "3"
 						if self.selected_pole_1 not in self.poles.keys():
 							self.show_message("Invalid pole number")
