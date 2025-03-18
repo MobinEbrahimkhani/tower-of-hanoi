@@ -27,9 +27,12 @@ class TowerOfHanoi:
 	# getting the number of disks that are going to be in the game from the user
 	def getting_num_of_disks_GUI(self):
 		self.get_disk_nums_window = tk.Tk()
+		msg = tk.Message(self.get_disk_nums_window, text="Enter the number of disks to be in the game: ",width=300)
 		first_entry = tk.Entry(self.get_disk_nums_window, font=("Arial", 50))
-		first_entry.pack(pady=20)
-		self.get_disk_nums_window.title("Enter the number of disks to be in the game")
+		msg.pack(pady=10)
+		first_entry.pack()
+		self.get_disk_nums_window.title("Tower of Hanoi")
+		# submitting the number of disks
 		def submit_num_of_disks():
 			try:
 				self.num_disks = int(first_entry.get())
@@ -44,7 +47,7 @@ class TowerOfHanoi:
 					self.get_disk_nums_window.destroy()
 					self.getting_num_of_disks_GUI()
 
-		submit_num_of_disks_button = tk.Button(self.get_disk_nums_window,text="Submit the number of disks",command=submit_num_of_disks)
+		submit_num_of_disks_button = tk.Button(self.get_disk_nums_window,text="Submit",command=submit_num_of_disks)
 		submit_num_of_disks_button.pack(pady=10)
 		
 		self.get_disk_nums_window.mainloop()
