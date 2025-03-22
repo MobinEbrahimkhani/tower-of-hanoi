@@ -4,12 +4,14 @@ from solving_algorithm import solving
 
 class TowerOfHanoi:
 	"""This is the main class that the game runs on"""
+
 	def __init__(self):
-		self.count = 0	# Moves count
+		self.move_count = 0	# Moves count
 		self.poles = {"1": [], "2": [], "3": []}	# Stores poles and the disks on them
 		self.num_disks = 4	# Number of disks that are going to be in the game
 		self.get_disk_nums_window = None	# The first window that pops up and gets the number of disk from the user
-		self.window = None	# The main window that everything is on it
+		self.window = None	# The main window
+		self.error_window = None # Error window 
 		self.canvas = None	# The canvas that the game is shown on
 		self.status_label = None	# Shows the events of the game on the main window under the speed slider
 		self.origin_pole = ""	# The pole that we are going to take a disk from
@@ -17,6 +19,8 @@ class TowerOfHanoi:
 		self.mouse_click_count = 0	# Mouse click count to choose if it is the origin or destination pole that is being selected
 		self.animation_speed = 1500	# Speed of the animation
 		self.colors = ["purple","blue","cyan","green","yellow","orange","red"]	# Colors for disks
+		self.disk_height = 20 # Default height of all the disks
+		self.error = False # Error checker
 		
 		self.getting_num_of_disks_GUI()	# Running the game
 
@@ -24,6 +28,7 @@ class TowerOfHanoi:
 
 	def initialize_disks(self):
 		"""Initializing and putting the disks on the poles"""
+
 		for i in range(self.num_disks, 0, -1):
 			self.poles["1"].append(i)
 	
@@ -31,6 +36,7 @@ class TowerOfHanoi:
 	
 	def getting_num_of_disks_GUI(self):
 		"""Running the first window to get them numver of disks"""
+
 		self.get_disk_nums_window = tk.Tk()
 		msg = tk.Message(self.get_disk_nums_window, text="Enter the number of disks to be in the game: ",width=300)
 		first_entry = tk.Entry(self.get_disk_nums_window, font=("Arial", 50))
@@ -40,6 +46,7 @@ class TowerOfHanoi:
 
 		def submit_num_of_disks_func():
 			"""Submitting the number of disks"""
+
 			try:
 				self.num_disks = int(first_entry.get())
 				if self.num_disks in range(1,8):
@@ -61,6 +68,28 @@ class TowerOfHanoi:
 
 # ----------------------------------------
 
+	def raise_error(self, error=str):
+		"""Raises an error widnow"""
+		def ok_button():
+			self.window.destroy()
+			self.error_window.destroy()
+
+		self.error_window = tk.Tk()
+		self.error_window.title("Error!!")
+
+		error_msg = tk.Message(self.error_window, text=error)
+		error_msg.pack()
+		
+		error_msg_2 = tk.Message(self.error_window, text="This probably happened because you pushed the 'Auto Solve' button when the disks where not in the starting position.")
+		error_msg_2.pack()
+
+		button = tk.Button(self.error_window, text="OK", command=ok_button)
+		button.pack()
+
+		self.error_window.mainloop()
+
+# ----------------------------------------	
+
 	def GUI(self):
 		"""The main window that the game runs on"""
 		
@@ -77,28 +106,47 @@ class TowerOfHanoi:
 			"""Auto solve function that gets the 'result' list from the 'solving_algorithm.py' and solves the game"""
 			# 'result' variable is a list of list that have 2 numbers: 
 			# The first one is the origin pole and the second one is the destionation
-			result = solving(self.num_disks) 
+			#
+			# ATTENTION: The Auto Solve method is NOT garanteed to work if the disks have been moved!
+	
+			if self.error == True:
+				self.raise_error(None)
 			
-			def perform_move(index):
-				"""A function that performes moves based on the 'result' that is a list of moves"""
+			else:
+					result = solving(self.num_disks) 
+					
+					def perform_move(index):
+						"""A function that performes moves based on the 'result' that is a list of moves"""
+						
+						if index < len(result):
+
+							if self.error == True:
+								self.raise_error(None)
+							else:
+								try:
+									self.origin_pole = result[index][0]
+									self.desetination_pole = result[index][1]
+									self.move_disk()
+									self.window.after(self.animation_speed, perform_move, index + 1)	
+									self.animation_speed = slider.get() * 100
+									self.check_win()
+								
+								except Exception as error:
+									self.raise_error(error)
+							
+					perform_move(0)  # Start the first move
 				
-				if index < len(result):
-					self.origin_pole = result[index][0]
-					self.desetination_pole = result[index][1]
-					self.move_disk()
-					self.window.after(self.animation_speed, perform_move, index + 1)	
-					self.animation_speed = slider.get() * 100
-					self.check_win()
 			
-			perform_move(0)  # Start the first move
 		# Auto solve button setup	
 		auto_solve_button = tk.Button(self.window, text="Auto Solve", command=auto_solve)
 		auto_solve_button.pack(pady=5)
 
 		def restart():
 			"""Restarts the game"""
+
 			self.window.destroy()
 			TowerOfHanoi()
+			
 		# Restart button setup
 		restart_button = tk.Button(self.window, text="Restart", command=restart)
 		restart_button.pack(pady=5)
@@ -115,6 +163,7 @@ class TowerOfHanoi:
 
 		def mouse_click(event):
 			"""Mouse click event function"""
+
 			# Cheking if the click is on the canvas
 			if 140 <= event.y <= 400 and 130 <= event.x <= 670:
 				self.mouse_click_count += 1	
@@ -151,8 +200,10 @@ class TowerOfHanoi:
 							self.show_message("No disk on the selected pole")
 						else:
 							self.show_message(f"Selected pole {self.origin_pole}")
+				
+					#TODO: adding the drag and drop method
 
-			# ----------------------------------------
+				# ----------------------------------------
 				
 				else: 
 					# Selecting pole_1 as destination pole
@@ -201,8 +252,10 @@ class TowerOfHanoi:
 
 	def show_message(self, message):
 			"""Shows the status massage"""
+
 			if self.status_label:
 				self.status_label.config(text=message)
+
 			
 			self.update_poles_text_status()
 			self.draw_game()
@@ -225,6 +278,30 @@ class TowerOfHanoi:
 
 # ----------------------------------------
 
+	def draw_disk(self,disk_size,x,y):
+		"""Draws the disks"""
+
+		# Calculate disk dimentions
+		width = 25 + disk_size * 15
+
+				
+		# Draw disk
+		self.canvas.create_rectangle(
+			x - width/2, y - self.disk_height,
+			x + width/2, y,
+			fill=self.colors[disk_size-1]
+		)
+
+		# Add text label showing disk size
+		self.canvas.create_text(
+			x, y - self.disk_height/2,
+			text=str(disk_size),
+			fill="black",
+			font=("Arial", 10, "bold")
+		)
+
+# ----------------------------------------
+
 	def draw_game(self):
 		"""Drawing the main game on the canvas"""
 
@@ -235,7 +312,7 @@ class TowerOfHanoi:
 			# Draw the count of the moves
 			self.canvas.create_text(
 				400, 50,
-				text=f"Moves: {self.count}",
+				text=f"Moves: {self.move_count}",
 				fill="black",
 				font=("Arial", 20, "bold")
 			)
@@ -250,46 +327,32 @@ class TowerOfHanoi:
 			
 			# Draw disks for each pole
 			for pole_i, pole_num in enumerate(["1", "2", "3"]):
+				
 				x = pole_x[pole_i]
 				y_base = 350  # Base y-position
-				
-				for i, disk_size in enumerate(self.poles[pole_num]):
-					# Calculate disk dimentions
-					width = 25 + disk_size * 15
-					height = 20
-					y = y_base - (i + 1) * height
-					
-					# Draw disk
-					self.canvas.create_rectangle(
-						x - width/2, y - height,
-						x + width/2, y,
-						fill=self.colors[disk_size-1]
-					)
-     
-					# Add text label showing disk size
-					self.canvas.create_text(
-						x, y - height/2,
-						text=str(disk_size),
-						fill="black",
-						font=("Arial", 10, "bold")
-					)
 
+				for i, disk_size in enumerate(self.poles[pole_num]):
+					self.draw_disk(disk_size, x=pole_x[pole_i],y = y_base - (i + 1) * self.disk_height)
+					
+					
 # ----------------------------------------
 
 	def move_disk(self):
 		"""Moves disk from the origin to the destination pole"""  
+
 		if len(self.poles[self.desetination_pole]) == 0:
 			self.poles[self.desetination_pole].append(self.poles[self.origin_pole].pop())
 			self.show_message(f"Moved disk from pole {self.origin_pole} to pole {self.desetination_pole}")
-			self.count += 1
+			self.move_count += 1
 
 		elif self.poles[self.origin_pole][-1] < self.poles[self.desetination_pole][-1]:
 			self.poles[self.desetination_pole].append(self.poles[self.origin_pole].pop())
 			self.show_message(f"Moved disk from pole {self.origin_pole} to pole {self.desetination_pole}")
-			self.count += 1
+			self.move_count += 1
 
 		else:
 			self.show_message("Invalid move")
+			self.error = True
 		
 		self.draw_game()	# Update the graphic
 
@@ -297,6 +360,7 @@ class TowerOfHanoi:
 
 	def check_win(self):
 		"""Checks if all the disks are on the destination pole"""
+
 		if self.poles["3"] == list(range(self.num_disks, 0, -1)):
 			self.show_message("Game won!")
 			messagebox.showinfo("Congratulations", "Game won!")
