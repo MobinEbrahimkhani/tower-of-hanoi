@@ -68,6 +68,14 @@ class TowerOfHanoi:
 
 # ----------------------------------------
 
+	
+	def restart(self):
+		"""Restarts the game"""
+
+		self.window.destroy()
+		TowerOfHanoi()
+				
+	
 	def raise_error(self, error=str):
 		"""Raises an error widnow"""
 		def ok_button():
@@ -80,11 +88,14 @@ class TowerOfHanoi:
 		error_msg = tk.Message(self.error_window, text=error)
 		error_msg.pack()
 		
-		error_msg_2 = tk.Message(self.error_window, text="This probably happened because you pushed the 'Auto Solve' button when the disks where not in the starting position.")
+		error_msg_2 = tk.Message(self.error_window, text="This probably happened because you moved the disks and then pushed the 'Auto Solve' button.", width="400")
 		error_msg_2.pack()
 
-		button = tk.Button(self.error_window, text="OK", command=ok_button)
-		button.pack()
+		exit_button = tk.Button(self.error_window, text="Exit", command=ok_button)
+		exit_button.pack()
+
+		restart_button = tk.Button(self.error_window, text="Restart", command=self.restart)
+		restart_button.pack()
 
 		self.error_window.mainloop()
 
@@ -141,14 +152,8 @@ class TowerOfHanoi:
 		auto_solve_button = tk.Button(self.window, text="Auto Solve", command=auto_solve)
 		auto_solve_button.pack(pady=5)
 
-		def restart():
-			"""Restarts the game"""
-
-			self.window.destroy()
-			TowerOfHanoi()
-			
 		# Restart button setup
-		restart_button = tk.Button(self.window, text="Restart", command=restart)
+		restart_button = tk.Button(self.window, text="Restart", command=self.restart)
 		restart_button.pack(pady=5)
 		
 		# Slider massage 
