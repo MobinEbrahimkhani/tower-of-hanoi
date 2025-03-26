@@ -78,7 +78,7 @@ class TowerOfHanoi:
 	
 	def raise_error(self, error=str):
 		"""Raises an error widnow"""
-		def ok_button():
+		def exit_button_func():
 			self.window.destroy()
 			self.error_window.destroy()
 
@@ -91,7 +91,7 @@ class TowerOfHanoi:
 		error_msg_2 = tk.Message(self.error_window, text="This probably happened because you moved the disks and then pushed the 'Auto Solve' button.", width="400")
 		error_msg_2.pack()
 
-		exit_button = tk.Button(self.error_window, text="Exit", command=ok_button)
+		exit_button = tk.Button(self.error_window, text="Exit", command=exit_button_func)
 		exit_button.pack()
 
 		restart_button = tk.Button(self.error_window, text="Restart", command=self.restart)
