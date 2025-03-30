@@ -1,13 +1,20 @@
-def solving(num_of_disks):
+def is_first_state(num_disks, game_state):
+
+    if game_state["1"] == list(range(num_disks, 0, -1)):
+        return True
+    
+
+
+def algo_solve(num_disks):
     pole_1, pole_2, pole_3 = '1', '2', '3'
     result = []
 
-    if num_of_disks % 2 == 0:
+    if num_disks % 2 == 0:
         pole_2, pole_3 = pole_3, pole_2
 
 
-    total_moves = (2 ** num_of_disks) - 1
-    poles = { '1': list(range(num_of_disks, 0, -1)), '2': [], '3': [] }
+    total_moves = (2 ** num_disks) - 1
+    poles = { '1': list(range(num_disks, 0, -1)), '2': [], '3': [] }
 
 
     for move in range(1, total_moves + 1):
@@ -39,5 +46,19 @@ def solving(num_of_disks):
         result.append([origin_pole,destination_pole])
     
     return result
+
+def BFS_solve(num_disks, game_state):
+    pass 
+
+def solver(num_disks, game_state):
+    
+    if is_first_state(num_disks, game_state):
+        return algo_solve(num_disks)
+   
+    else:
+        return BFS_solve(num_disks, game_state)
+    
+
+
 
 
