@@ -1,6 +1,6 @@
 import tkinter as tk
 import tkinter.messagebox as messagebox
-from solving_algorithm import solver
+from solving_algorithms import solver
 
 class TowerOfHanoi:
 	"""This is the main class that the game runs on"""
