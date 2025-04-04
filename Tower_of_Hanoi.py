@@ -1,6 +1,6 @@
 import tkinter as tk
 import tkinter.messagebox as messagebox
-from solving_algorithms import solver
+from solving_algorithms import Solver
 
 class TowerOfHanoi:
 	"""This is the main class that the game runs on"""
@@ -124,7 +124,8 @@ class TowerOfHanoi:
 				self.raise_error(None)
 			
 			else:
-				result = solver(self.num_disks, self.poles) 
+				solver = Solver(self.num_disks, self.poles)
+				result = solver.solve()
 				
 				def perform_move(index):
 						"""A function that performes moves based on the 'result' that is a list of moves"""
