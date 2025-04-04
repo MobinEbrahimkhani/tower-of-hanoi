@@ -1,5 +1,7 @@
 class Solver:
+    
     def __init__(self, num_disks, game_state):
+        
         self.game_state = game_state
         self.num_disks = num_disks
         self.move_count = 0
@@ -9,6 +11,7 @@ class Solver:
 
     def is_first_state(self):
         """Checks that whether the disk are in the starting position or not"""
+        
         if self.game_state["1"] == list(range(self.num_disks, 0, -1)):
             return True
         else:
@@ -87,7 +90,14 @@ class Solver:
         else:
             pass
 
-# ----------------------------------------
+
+    def check_win(self,game_state):
+        """Checks if all the disks are on the destination pole"""
+        if game_state["3"] == list(range(self.num_disks, 0, -1)):
+            return True
+        else:
+            return False
+
 
     def BFS_solve(self):
         """BFS(Breadth-First Search) that works when the disk are NOT in the starting position"""
