@@ -68,13 +68,13 @@ class TowerOfHanoi:
 
 # ----------------------------------------
 
-	
 	def restart(self):
 		"""Restarts the game"""
 
 		self.window.destroy()
 		TowerOfHanoi()
-				
+
+# ----------------------------------------				
 	
 	def raise_error(self, error=str):
 		"""Raises an error widnow"""
@@ -375,4 +375,4 @@ class TowerOfHanoi:
 		else:
 			return False
  
-game = TowerOfHanoi()	# Create an instance of the game in Python
+towerofHanoi = TowerOfHanoi()	# Create an instance of the game in Python
