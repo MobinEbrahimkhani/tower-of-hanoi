@@ -16,8 +16,7 @@ class Solver:
             return True
         else:
             return False
-        
-# ----------------------------------------        
+   
     
     def solve(self):
         """Solver that is being called in the main program"""
@@ -25,7 +24,6 @@ class Solver:
         if self.is_first_state():
             return self.algo_solve()
             
-    
         else:
             return self.BFS_solve()
 
@@ -74,18 +72,18 @@ class Solver:
 
 # ----------------------------------------
 
-    def move_disk(self, origin_pole, destination_pole):
+    def move_disk(self ,game_state ,origin_pole, destination_pole):
         """Moves the disks from the given origin pole to the given destination pole"""
 
-        if len(self.game_state[destination_pole]) == 0:
-            self.game_state[destination_pole].append(self.game_state[origin_pole].pop())
+        if len(game_state[destination_pole]) == 0:
+            game_state[destination_pole].append(game_state[origin_pole].pop())
             move_count += 1
-            return self.game_state
+            return game_state
 
-        elif self.game_state[origin_pole][-1] < self.game_state[destination_pole][-1]:
-            self.game_state[destination_pole].append(self.game_state[origin_pole].pop())
+        elif game_state[origin_pole][-1] < game_state[destination_pole][-1]:
+            game_state[destination_pole].append(game_state[origin_pole].pop())
             move_count += 1
-            return self.game_state
+            return game_state
 
         else:
             pass
@@ -99,9 +97,49 @@ class Solver:
             return False
 
 
+    def dict_to_tuple(dict_game_state):
+        """Converts dictionary to tuple of tuples
+            
+            we do this so we can add the game state to the 'visited' variable
+            that is a set and we can only add a hashable item to it
+        """
+        return tuple((pole, tuple(dict_game_state[pole])) for pole in sorted(dict_game_state))
+
+
+    def convert_to_instruction(path=list):
+        pass
+
+
+    def possible_move_generator(game_state=dict):
+        possible_moves = []
+        # TODO: Calculating and finding the possible moves
+        return possible_moves
+
+
     def BFS_solve(self):
         """BFS(Breadth-First Search) that works when the disk are NOT in the starting position"""
-        pass
+        
+        game_state = self.game_state
+        queue = [game_state]
+        visited = set()
+        path = []
+
+        while queue:
+             
+            if self.check_win(game_state):
+                self.convert_to_instruction(path)
+            
+            elif self.dict_to_tuple(game_state) not in visited:
+                for possible_move in self.possible_move_generator(game_state):
+                    if (self.dict_to_tuple(possible_move) not in visited) and (possible_move not in queue):
+                        queue.append(possible_move)
+                
+                visited.add(self.dict_to_tuple(game_state))
+                queue.pop[0]
+            
+                game_state = queue[0]
+            
+        
 
 # ----------------------------------------
 
