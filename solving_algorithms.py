@@ -107,17 +107,21 @@ class Solver:
 
 
     def convert_to_instruction(path=list):
-        pass
+        """Converts the 'path' variable that is a list of dicts
+            that are the game states"""
 
 
     def possible_move_generator(game_state=dict):
+        """Generates the possible moves from the given game state"""
+        
         possible_moves = []
         # TODO: Calculating and finding the possible moves
         return possible_moves
 
 
     def BFS_solve(self):
-        """BFS(Breadth-First Search) that works when the disk are NOT in the starting position"""
+        """BFS(Breadth-First Search) that works 
+            when the disk are NOT in the starting position"""
         
         game_state = self.game_state
         queue = [game_state]
