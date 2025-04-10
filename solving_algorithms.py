@@ -21,11 +21,11 @@ class Solver:
     def solve(self):
         """Solver that is being called in the main program"""
         
-        if self.is_first_state():
-            return self.algo_solve()
+        # if self.is_first_state():
+        #     return self.algo_solve()
             
-        else:
-            return self.BFS_solve()
+        # else:
+        #     return self.BFS_solve()
 
 # ----------------------------------------
 
@@ -38,10 +38,10 @@ class Solver:
         if self.num_disks % 2 == 0:
             pole_2, pole_3 = pole_3, pole_2
 
-        total_moves = (2 ** self.num_disks) - 1
+        self.move_count = (2 ** self.num_disks) - 1
         poles = { '1': list(range(self.num_disks, 0, -1)), '2': [], '3': [] }
 
-        for move in range(1, total_moves + 1):
+        for move in range(1, self.move_count + 1):
             if move % 3 == 1:
                 if poles[pole_1] and (not poles[pole_3] or poles[pole_1][-1] < poles[pole_3][-1]):
                     origin_pole = pole_1
@@ -72,23 +72,6 @@ class Solver:
 
 # ----------------------------------------
 
-    def move_disk(self ,game_state ,origin_pole, destination_pole):
-        """Moves the disks from the given origin pole to the given destination pole"""
-
-        if len(game_state[destination_pole]) == 0:
-            game_state[destination_pole].append(game_state[origin_pole].pop())
-            move_count += 1
-            return game_state
-
-        elif game_state[origin_pole][-1] < game_state[destination_pole][-1]:
-            game_state[destination_pole].append(game_state[origin_pole].pop())
-            move_count += 1
-            return game_state
-
-        else:
-            pass
-
-
     def check_win(self,game_state):
         """Checks if all the disks are on the destination pole"""
         if game_state["3"] == list(range(self.num_disks, 0, -1)):
@@ -106,18 +89,39 @@ class Solver:
         return tuple((pole, tuple(dict_game_state[pole])) for pole in sorted(dict_game_state))
 
 
-    def convert_to_instruction(path=list):
-        """Converts the 'path' variable that is a list of dicts
-            that are the game states"""
+    def move_disk(self ,game_state ,origin_pole, destination_pole):
+        """Moves the disks from the given origin pole to the given destination pole"""
+        new_game_state = {pole: game_state[pole][:] for pole in game_state}
+
+        if len(new_game_state[origin_pole]) != 0:
+            if len(new_game_state[destination_pole]) == 0:
+                new_game_state[destination_pole].append(new_game_state[origin_pole].pop())
+                return new_game_state
+
+            elif new_game_state[origin_pole][-1] < new_game_state[destination_pole][-1]:
+                new_game_state[destination_pole].append(new_game_state[origin_pole].pop())
+                return new_game_state
+
+            else:
+                pass
 
 
-    def possible_move_generator(game_state=dict):
+    def possible_move_generator(self, game_state=dict):
         """Generates the possible moves from the given game state"""
-        
+    
         possible_moves = []
-        # TODO: Calculating and finding the possible moves
-        return possible_moves
+        poles = ["1", "2", "3"]
+        new_game_state = {}
 
+        for origin in poles:
+            for destination in poles:
+                new_game_state = self.move_disk(game_state, origin, destination)
+                if new_game_state and new_game_state not in possible_moves:
+                    possible_moves.append(new_game_state)
+                new_game_state = None
+        
+        return possible_moves
+        
 
     def BFS_solve(self):
         """BFS(Breadth-First Search) that works 
@@ -126,13 +130,12 @@ class Solver:
         game_state = self.game_state
         queue = [game_state]
         visited = set()
-        path = []
 
         while queue:
              
             if self.check_win(game_state):
-                self.convert_to_instruction(path)
-            
+                pass # TODO
+
             elif self.dict_to_tuple(game_state) not in visited:
                 for possible_move in self.possible_move_generator(game_state):
                     if (self.dict_to_tuple(possible_move) not in visited) and (possible_move not in queue):
@@ -147,10 +150,9 @@ class Solver:
 
 # ----------------------------------------
 
-# solver = Solver(3, {"1":[3, 2, 1], "2":[], "3":[]})
+# solver = Solver(3, {"1":[], "2":[3,2,1], "3":[]})
 # result = solver.solve()
 # print(result)
-
-
+# print(solver.possible_move_generator({"1":[3], "2":[2], "3":[1]}))
 
 
