@@ -5,6 +5,8 @@ class Solver:
         self.game_state = game_state
         self.num_disks = num_disks
         self.move_count = 0
+        self.state_instructions = []
+        self.result = []
 
 # ----------------------------------------    
 
@@ -32,7 +34,7 @@ class Solver:
         """Algortihm solve that only works when the disks are all on the first pole"""
         
         pole_1, pole_2, pole_3 = '1', '2', '3'
-        result = []
+        self.result = []
 
         if self.num_disks % 2 == 0:
             pole_2, pole_3 = pole_3, pole_2
@@ -65,9 +67,9 @@ class Solver:
 
             disk = poles[origin_pole].pop()
             poles[destination_pole].append(disk)
-            result.append([origin_pole,destination_pole])
+            self.result.append([origin_pole,destination_pole])
         
-        return result
+        return self.result
 
 # ----------------------------------------
 
@@ -101,9 +103,6 @@ class Solver:
                 new_game_state[destination_pole].append(new_game_state[origin_pole].pop())
                 return new_game_state
 
-            else:
-                pass
-
 
     def possible_move_generator(self, game_state=dict):
         """Generates the possible moves from the given game state"""
@@ -117,10 +116,30 @@ class Solver:
                 new_game_state = self.move_disk(game_state, origin, destination)
                 if new_game_state and new_game_state not in possible_moves:
                     possible_moves.append(new_game_state)
+                    self.state_instructions.append([origin,destination])
                 new_game_state = None
-        
+            
         return possible_moves
+    
+
+    def instruction_extractor(self,changes_list=list):
+        """Extracts the instructions from the moves the program did"""
         
+        # Getting the current game state and its instruction
+        current_game_state = changes_list.pop()
+        current_instruction = self.state_instructions.pop()
+
+        for i in range(0,11):
+        # while current_game_state != self.game_state:
+            # Giving these infos to the 'move_disk' func to redo the  
+            self.move_disk(current_game_state,current_instruction[1],current_instruction[0])
+            
+            self.result.append([current_instruction[1],current_instruction[0]])
+            print(changes_list,"\n",self.state_instructions)
+
+        return self.result
+
+
 
     def BFS_solve(self):
         """BFS(Breadth-First Search) that works 
@@ -130,6 +149,7 @@ class Solver:
         queue = [game_state]
         visited = set()
         all_moves = set()
+        changes_list = []
 
         # While queue has something it will run the BFS
         while queue:    
@@ -139,15 +159,27 @@ class Solver:
 
             # Checking of the game is done
             if self.check_win(game_state): 
-                print("GAME WON ;DFKLGS;DFLKGJSDF;LGKJS;DLKGJA;LKGJREIGNZDFLKNV;CLZKMVBV;IFJGROIGJFDGJ;SLKV; \n ;DSLFGJS;DFLGKJS;DFLGKJS;DFLGJ;FDLGJS;LFDGJKS;LKFG \n FD;LRVVGFVMFLGGRJDFFDFDDTRTEETEHRAN TEXSZ")
-                break
+                print("GAME WON")
+                return self.instruction_extractor(changes_list)
+                
 
             # Doing the main BFS part and adding game state to the queue
             elif self.dict_to_tuple(game_state) not in visited:
+                
+                queue_len_before = len(queue)
+
+                # Adding the possible moves to the queue
                 for possible_move in self.possible_move_generator(game_state):
                     if (self.dict_to_tuple(possible_move) not in visited) and (possible_move not in queue):
                         queue.append(possible_move)
-                
+                        
+                queue_len_after = len(queue)
+
+                # Checking to see whether ther is a game state added to queue or not
+                if queue_len_before == queue_len_after:
+                    self.state_instructions.pop()
+                queue_len_before, queue_len_after = 0, 0
+
                 all_moves.add(self.dict_to_tuple(game_state))  
                 print("--- all game states checked: ", len(all_moves),"---\n")
                 
@@ -156,11 +188,19 @@ class Solver:
 
                 # Making the first one one the queue the game state so that the 
                 game_state = queue[0]
-            
+                changes_list.append(queue[0])
+        
+        print("\n\n\n\n\n",changes_list)
+        print(self.state_instructions)
+        
+    
+
+        
 # ----------------------------------------
 
-# solver = Solver(1, {"1":[1], "2":[], "3":[]})
-# result = solver.solve()
+solver = Solver(1, {"1":[], "2":[1], "3":[]})
+result = solver.solve()
+print(result)
 # print(solver.BFS_solve({"1":[], "2":[2], "3":[1]}))
 # print(solver.dict_to_tuple({"1":[], "2":[2], "3":[1]}))
 
