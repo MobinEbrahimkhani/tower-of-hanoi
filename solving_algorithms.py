@@ -5,7 +5,6 @@ class Solver:
         self.game_state = game_state
         self.num_disks = num_disks
         self.move_count = 0
-        self.solve()
 
 # ----------------------------------------    
 
@@ -13,7 +12,7 @@ class Solver:
         """Checks that whether the disk are in the starting position or not"""
         
         if self.game_state["1"] == list(range(self.num_disks, 0, -1)):
-            return True
+            return False
         else:
             return False
    
@@ -21,11 +20,11 @@ class Solver:
     def solve(self):
         """Solver that is being called in the main program"""
         
-        # if self.is_first_state():
-        #     return self.algo_solve()
+        if self.is_first_state():
+            return self.algo_solve()
             
-        # else:
-        #     return self.BFS_solve()
+        else:
+            return self.BFS_solve()
 
 # ----------------------------------------
 
@@ -80,7 +79,7 @@ class Solver:
             return False
 
 
-    def dict_to_tuple(dict_game_state):
+    def dict_to_tuple(self,dict_game_state):
         """Converts dictionary to tuple of tuples
             
             we do this so we can add the game state to the 'visited' variable
@@ -130,29 +129,40 @@ class Solver:
         game_state = self.game_state
         queue = [game_state]
         visited = set()
+        all_moves = set()
 
-        while queue:
-             
-            if self.check_win(game_state):
-                pass # TODO
+        # While queue has something it will run the BFS
+        while queue:    
+            
+            # Poping the the current game state that is being looked on from the queue
+            queue.pop(0)
 
+            # Checking of the game is done
+            if self.check_win(game_state): 
+                print("GAME WON ;DFKLGS;DFLKGJSDF;LGKJS;DLKGJA;LKGJREIGNZDFLKNV;CLZKMVBV;IFJGROIGJFDGJ;SLKV; \n ;DSLFGJS;DFLGKJS;DFLGKJS;DFLGJ;FDLGJS;LFDGJKS;LKFG \n FD;LRVVGFVMFLGGRJDFFDFDDTRTEETEHRAN TEXSZ")
+                break
+
+            # Doing the main BFS part and adding game state to the queue
             elif self.dict_to_tuple(game_state) not in visited:
                 for possible_move in self.possible_move_generator(game_state):
                     if (self.dict_to_tuple(possible_move) not in visited) and (possible_move not in queue):
                         queue.append(possible_move)
                 
+                all_moves.add(self.dict_to_tuple(game_state))  
+                print("--- all game states checked: ", len(all_moves),"---\n")
+                
+                # Adding the current game_state to the visisted var
                 visited.add(self.dict_to_tuple(game_state))
-                queue.pop[0]
-            
+
+                # Making the first one one the queue the game state so that the 
                 game_state = queue[0]
             
         
 
 # ----------------------------------------
 
-# solver = Solver(3, {"1":[], "2":[3,2,1], "3":[]})
-# result = solver.solve()
-# print(result)
-# print(solver.possible_move_generator({"1":[3], "2":[2], "3":[1]}))
-
+solver = Solver(1, {"1":[1], "2":[], "3":[]})
+result = solver.solve()
+# print(solver.BFS_solve({"1":[], "2":[2], "3":[1]}))
+# print(solver.dict_to_tuple({"1":[], "2":[2], "3":[1]}))
 
