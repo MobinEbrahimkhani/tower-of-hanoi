@@ -12,7 +12,7 @@ class Solver:
         """Checks that whether the disk are in the starting position or not"""
         
         if self.game_state["1"] == list(range(self.num_disks, 0, -1)):
-            return False
+            return True
         else:
             return False
    
@@ -157,12 +157,10 @@ class Solver:
                 # Making the first one one the queue the game state so that the 
                 game_state = queue[0]
             
-        
-
 # ----------------------------------------
 
-solver = Solver(1, {"1":[1], "2":[], "3":[]})
-result = solver.solve()
+# solver = Solver(1, {"1":[1], "2":[], "3":[]})
+# result = solver.solve()
 # print(solver.BFS_solve({"1":[], "2":[2], "3":[1]}))
 # print(solver.dict_to_tuple({"1":[], "2":[2], "3":[1]}))
 
