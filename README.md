@@ -2,7 +2,7 @@
 
 A graphical implementation of the classic Tower of Hanoi puzzle game using Python and Tkinter.
 
-![Tower of Hanoi](./images/Screenshot 2025-04-17 at 8.43.55 PM.png)
+![Tower of Hanoi](./images/game_screenshot.png)
 
 ## Description
 
