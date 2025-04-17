@@ -1,6 +1,7 @@
 import tkinter as tk
 import tkinter.messagebox as messagebox
 from solving_algorithms import Solver
+from game_state import GameState
 
 class TowerOfHanoi:
 	"""This is the main class that the game runs on"""
@@ -124,7 +125,9 @@ class TowerOfHanoi:
 				self.raise_error(None)
 			
 			else:
-				solver = Solver(self.num_disks, self.poles)
+				auto_solve_game_state = GameState(self.num_disks)
+				auto_solve_game_state.poles = [self.poles["1"], self.poles["2"], self.poles["3"]]
+				solver = Solver(self.num_disks, auto_solve_game_state)
 				result = solver.solve()
 				
 				def perform_move(index):
@@ -136,8 +139,8 @@ class TowerOfHanoi:
 								self.raise_error(None)
 							else:
 								try:
-									self.origin_pole = result[index][0]
-									self.desetination_pole = result[index][1]
+									self.origin_pole = str(result[index][0] + 1)
+									self.desetination_pole = str(result[index][1] + 1)
 									self.move_disk()
 									self.window.after(self.animation_speed, perform_move, index + 1)	
 									self.animation_speed = slider.get() * 100
