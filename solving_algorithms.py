@@ -5,7 +5,7 @@ class Solver:
         self.game_state = game_state
         self.num_disks = num_disks
         self.move_count = 0
-        self.state_instructions = []
+        self.instructions = []
         self.result = []
 
 # ----------------------------------------    
@@ -92,7 +92,15 @@ class Solver:
 
     def move_disk(self ,game_state ,origin_pole, destination_pole):
         """Moves the disks from the given origin pole to the given destination pole"""
-        new_game_state = {pole: game_state[pole][:] for pole in game_state}
+        if type(game_state) == dict:
+            new_game_state = {pole: game_state[pole][:] for pole in game_state}
+
+        elif type(game_state) == set:
+            new_game_state = {tuple(inner_tuple for inner_tuple in tuple_item) for tuple_item in game_state}
+
+        else:
+            return None
+        
 
         if len(new_game_state[origin_pole]) != 0:
             if len(new_game_state[destination_pole]) == 0:
@@ -104,43 +112,6 @@ class Solver:
                 return new_game_state
 
 
-    def possible_move_generator(self, game_state=dict):
-        """Generates the possible moves from the given game state"""
-    
-        possible_moves = []
-        poles = ["1", "2", "3"]
-        new_game_state = {}
-
-        for origin in poles:
-            for destination in poles:
-                new_game_state = self.move_disk(game_state, origin, destination)
-                if new_game_state and new_game_state not in possible_moves:
-                    possible_moves.append(new_game_state)
-                    self.state_instructions.append([origin,destination])
-                new_game_state = None
-            
-        return possible_moves
-    
-
-    def instruction_extractor(self,changes_list=list):
-        """Extracts the instructions from the moves the program did"""
-        
-        # Getting the current game state and its instruction
-        current_game_state = changes_list.pop()
-        current_instruction = self.state_instructions.pop()
-
-        for i in range(0,11):
-        # while current_game_state != self.game_state:
-            # Giving these infos to the 'move_disk' func to redo the  
-            self.move_disk(current_game_state,current_instruction[1],current_instruction[0])
-            
-            self.result.append([current_instruction[1],current_instruction[0]])
-            print(changes_list,"\n",self.state_instructions)
-
-        return self.result
-
-
-
     def BFS_solve(self):
         """BFS(Breadth-First Search) that works 
             when the disk are NOT in the starting position"""
@@ -148,8 +119,6 @@ class Solver:
         game_state = self.game_state
         queue = [game_state]
         visited = set()
-        all_moves = set()
-        changes_list = []
 
         # While queue has something it will run the BFS
         while queue:    
@@ -160,38 +129,32 @@ class Solver:
             # Checking of the game is done
             if self.check_win(game_state): 
                 print("GAME WON")
-                return self.instruction_extractor(changes_list)
+
+                # Adding the current game_state to the visisted var
+                visited.add(self.dict_to_tuple(game_state))
+
+                print("-_-_-_-_-_-_-_-_-_-_-_-_-_-_ \nvisited: ",visited)
+                print("queue: ",queue)
+                print("self.instructions: ",self.instructions)
+                
+                return self.instruction_extractor(visited)
                 
 
             # Doing the main BFS part and adding game state to the queue
             elif self.dict_to_tuple(game_state) not in visited:
                 
-                queue_len_before = len(queue)
-
+                # Adding the current game_state to the visisted var
+                visited.add(self.dict_to_tuple(game_state))
+                
                 # Adding the possible moves to the queue
                 for possible_move in self.possible_move_generator(game_state):
                     if (self.dict_to_tuple(possible_move) not in visited) and (possible_move not in queue):
                         queue.append(possible_move)
-                        
-                queue_len_after = len(queue)
 
-                # Checking to see whether ther is a game state added to queue or not
-                if queue_len_before == queue_len_after:
-                    self.state_instructions.pop()
-                queue_len_before, queue_len_after = 0, 0
-
-                all_moves.add(self.dict_to_tuple(game_state))  
-                print("--- all game states checked: ", len(all_moves),"---\n")
-                
-                # Adding the current game_state to the visisted var
-                visited.add(self.dict_to_tuple(game_state))
 
                 # Making the first one one the queue the game state so that the 
                 game_state = queue[0]
-                changes_list.append(queue[0])
         
-        print("\n\n\n\n\n",changes_list)
-        print(self.state_instructions)
         
     
 
