@@ -12,11 +12,14 @@ class Solver:
 
 # ----------------------------------------    
 
-    
     def solve(self):
         """Solver that is being called in the main program"""
-        
+    
         if self.game_state.is_first_state():
+            # Create a fresh game state to work with
+            fresh_state = GameState(self.num_disks)
+            fresh_state.init_first_state()
+            self.game_state = fresh_state
             return self.algo_solve()
             
         else:
