@@ -372,6 +372,7 @@ class TowerOfHanoi:
 
 		if self.poles["3"] == list(range(self.num_disks, 0, -1)):
 			self.show_message("Game won!")
+			self.window.update_idletasks()
 			messagebox.showinfo("Congratulations", "Game won!")
 			self.window.after(1000,self.window.destroy())
 			return True
