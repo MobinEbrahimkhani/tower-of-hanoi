@@ -60,7 +60,7 @@ This implementation provides both manual play and an auto-solve feature using ef
 
 3. Run the game:
    ```
-   python main.py
+   python Tower_of_Hanoi.py
    ```
 
 ## Implementation Details
