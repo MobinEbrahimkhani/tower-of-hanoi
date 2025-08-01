@@ -26,7 +26,7 @@ This implementation provides both manual play and an auto-solve feature using ef
 
 ## How to Play
 
-1. Start the game by running `python Tower_of-Hanoi.py`
+1. Start the game by running `python Tower_of_Hanoi.py`
 2. Enter the number of disks (1-7)
 3. Click on poles to move disks:
    - First click: Select source pole
